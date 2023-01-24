@@ -18,7 +18,9 @@ public class SceneLoader : MonoBehaviour
         CthuluMap1,
     }
 
-    private Dictionary<Scene, string> scenes = new Dictionary<Scene, string>();
+    public Dictionary<Scene, string> scenes = new ();
+
+    public HashSet<string> mapScenes = new ();
 
     private Scene lastScene;
     private Scene currentScene;
@@ -38,6 +40,8 @@ public class SceneLoader : MonoBehaviour
         currentScene = Scene.CthuluLobby;
         nextScene = Scene.CthuluMap1;
 
+        mapScenes.Add(scenes[Scene.CthuluMap1]);
+        
         _sceneManager.OnClientLoadedStartScenes += LoadLobbyScene;
     }
 

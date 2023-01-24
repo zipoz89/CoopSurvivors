@@ -97,11 +97,10 @@ public class StartMapButton : NetworkBehaviour
     {
         GameManager.Instance.SceneLoader.StartMap();
     }
-
-    [ServerRpc(RequireOwnership = false)]
+    
     public void StartGameServer()
     {
-        GameManager.Instance.SceneLoader.StartMap();
+        GameManager.Instance.StartGame();
     }
 
     private void OnDisable()

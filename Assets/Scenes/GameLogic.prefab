@@ -226,6 +226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6087704648150333917}
   - component: {fileID: 6087704648150333919}
+  - component: {fileID: 7847573865272279867}
   - component: {fileID: 6087704648150333918}
   - component: {fileID: 6087704648150333912}
   - component: {fileID: 6087704648150333913}
@@ -271,6 +272,19 @@ MonoBehaviour:
   playerManager: {fileID: 6087704648150333918}
   playerInput: {fileID: 6087704648150333912}
   sceneLoader: {fileID: 6087704648150333913}
+  stateMachine: {fileID: 7847573865272279867}
+--- !u!114 &7847573865272279867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6087704648150333916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b5d5bb80861a745b83c129cc7ba267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6087704648150333918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +346,7 @@ MonoBehaviour:
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
   <PrefabId>k__BackingField: -1
-  _scenePathHash: 2780072434
+  _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 0
   _sceneNetworkObjects:
@@ -383,7 +397,7 @@ Transform:
   - {fileID: 3690581069569516046}
   - {fileID: 6087704648150333917}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7533440998088302126
 GameObject:

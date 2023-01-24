@@ -20,8 +20,10 @@ public class PlayerManager : MonoBehaviour
 
     private Dictionary<NetworkConnection, Player> connectedPlayers = new Dictionary<NetworkConnection, Player>();
 
+    public int PlayersLoadedOnMap { get; private set; } = 0;
     public int PlayerCount => connectedPlayers.Count;
     
+
     private void Awake()
     {
         _serverManager.OnRemoteConnectionState += OnServerConnectionState;
@@ -36,11 +38,19 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    
     public void RegisterPlayer(NetworkConnection connection, Player player)
     {
         connectedPlayers[connection] = player;
         onPlayerConnected?.Invoke(connection);
     }
+
+    
+    public void SetPlayerLoadedOnMap()
+    {
+        PlayersLoadedOnMap++;
+    }
+    
 
     public NetworkObject[] GetPlayersNetworkObjects()
     {
@@ -54,12 +64,14 @@ public class PlayerManager : MonoBehaviour
         return res;
     }
 
+
     public Transform GetRandomPlayerTransform()
     {
         var players = this.connectedPlayers.Values.ToArray();
 
         return players[Random.Range(0, players.Length)].transform;
     }
+
 
     public Transform GetClosestPlayerTransform(Vector2 pos)
     {

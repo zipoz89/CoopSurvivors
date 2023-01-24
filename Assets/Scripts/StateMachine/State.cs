@@ -1,6 +1,9 @@
-public abstract class State
+namespace Old
 {
-    public abstract void OnStateEnter();
-    public abstract void OnStateUpdate();
-    public abstract void OnStateExit();
+    public abstract class State
+    {
+        public abstract void OnStateEnter();
+        public abstract void OnStateUpdate();
+        public abstract void OnStateExit();
+    }
 }
