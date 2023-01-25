@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isSprinting = false;
     private Vector2 movementDirection = Vector2.zero;
 
-    public void SetUpInput(PlayerInput input)
+    public void RegisterInput(PlayerInput input)
     {
         input.onSprint += SetSprint;
         input.onMovement += SetMovement;

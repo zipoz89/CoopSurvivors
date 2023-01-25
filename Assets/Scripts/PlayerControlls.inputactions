@@ -42,13 +42,49 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Look",
+                    "name": "Skill1",
                     "type": "Button",
-                    "id": "10c35314-a54a-485a-b855-bce58e3c2a4f",
+                    "id": "4c74b0f5-be64-424e-86c5-c629d296f2d7",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Skill2",
+                    "type": "Button",
+                    "id": "aa0b3dce-ad13-48af-87b4-5930ee09fb17",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponSlot1",
+                    "type": "Button",
+                    "id": "45d6e7d5-9e48-4c14-89c7-eb6113fd0468",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponSlot2",
+                    "type": "Button",
+                    "id": "6ac0afbf-60d6-4825-ab7d-d7b46f81f3cc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponSlot3",
+                    "type": "Button",
+                    "id": "c8b9a45f-c70f-4914-9740-bfe192cf2f1a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -142,12 +178,56 @@
                 },
                 {
                     "name": "",
-                    "id": "d3c17188-8267-481f-8b97-0e8b546ed660",
-                    "path": "<Mouse>/delta",
+                    "id": "bff61e89-7ae9-40f9-b06b-49d09daf12df",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
+                    "action": "Skill1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b470a3c1-1711-4fd1-a9af-dfedd7781526",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "778750a7-318c-493c-a001-6119ec963363",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponSlot1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7771034f-dbeb-4e5e-8080-0bb94cd92217",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponSlot2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62846c57-b8dc-4a52-99d4-52ee2cd18a91",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponSlot3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

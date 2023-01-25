@@ -33,8 +33,8 @@ public class SceneLoader : MonoBehaviour
 
     private void Awake()
     {
-        scenes.Add(Scene.CthuluMap1,"CthuluMap1");
-        scenes.Add(Scene.CthuluLobby,"CthuluLobby");
+        scenes.Add(Scene.CthuluMap1,"Map1");
+        scenes.Add(Scene.CthuluLobby,"Lobby");
 
         lastScene = Scene.None;
         currentScene = Scene.CthuluLobby;

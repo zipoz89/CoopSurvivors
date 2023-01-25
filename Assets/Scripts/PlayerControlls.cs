@@ -64,13 +64,49 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Look"",
+                    ""name"": ""Skill1"",
                     ""type"": ""Button"",
-                    ""id"": ""10c35314-a54a-485a-b855-bce58e3c2a4f"",
+                    ""id"": ""4c74b0f5-be64-424e-86c5-c629d296f2d7"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill2"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa0b3dce-ad13-48af-87b4-5930ee09fb17"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""45d6e7d5-9e48-4c14-89c7-eb6113fd0468"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ac0afbf-60d6-4825-ab7d-d7b46f81f3cc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponSlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8b9a45f-c70f-4914-9740-bfe192cf2f1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -164,12 +200,56 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""d3c17188-8267-481f-8b97-0e8b546ed660"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""bff61e89-7ae9-40f9-b06b-49d09daf12df"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""Skill1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b470a3c1-1711-4fd1-a9af-dfedd7781526"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skill2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""778750a7-318c-493c-a001-6119ec963363"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7771034f-dbeb-4e5e-8080-0bb94cd92217"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62846c57-b8dc-4a52-99d4-52ee2cd18a91"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponSlot3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -184,7 +264,11 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Skill1 = m_Player.FindAction("Skill1", throwIfNotFound: true);
+        m_Player_Skill2 = m_Player.FindAction("Skill2", throwIfNotFound: true);
+        m_Player_WeaponSlot1 = m_Player.FindAction("WeaponSlot1", throwIfNotFound: true);
+        m_Player_WeaponSlot2 = m_Player.FindAction("WeaponSlot2", throwIfNotFound: true);
+        m_Player_WeaponSlot3 = m_Player.FindAction("WeaponSlot3", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -248,7 +332,11 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Skill1;
+    private readonly InputAction m_Player_Skill2;
+    private readonly InputAction m_Player_WeaponSlot1;
+    private readonly InputAction m_Player_WeaponSlot2;
+    private readonly InputAction m_Player_WeaponSlot3;
     public struct PlayerActions
     {
         private @PlayerControlls m_Wrapper;
@@ -257,7 +345,11 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Skill1 => m_Wrapper.m_Player_Skill1;
+        public InputAction @Skill2 => m_Wrapper.m_Player_Skill2;
+        public InputAction @WeaponSlot1 => m_Wrapper.m_Player_WeaponSlot1;
+        public InputAction @WeaponSlot2 => m_Wrapper.m_Player_WeaponSlot2;
+        public InputAction @WeaponSlot3 => m_Wrapper.m_Player_WeaponSlot3;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -279,9 +371,21 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Skill1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
+                @Skill1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
+                @Skill1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill1;
+                @Skill2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
+                @Skill2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
+                @Skill2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkill2;
+                @WeaponSlot1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot1;
+                @WeaponSlot1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot1;
+                @WeaponSlot1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot1;
+                @WeaponSlot2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot2;
+                @WeaponSlot2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot2;
+                @WeaponSlot2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot2;
+                @WeaponSlot3.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot3;
+                @WeaponSlot3.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot3;
+                @WeaponSlot3.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponSlot3;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -298,9 +402,21 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @Look.started += instance.OnLook;
-                @Look.performed += instance.OnLook;
-                @Look.canceled += instance.OnLook;
+                @Skill1.started += instance.OnSkill1;
+                @Skill1.performed += instance.OnSkill1;
+                @Skill1.canceled += instance.OnSkill1;
+                @Skill2.started += instance.OnSkill2;
+                @Skill2.performed += instance.OnSkill2;
+                @Skill2.canceled += instance.OnSkill2;
+                @WeaponSlot1.started += instance.OnWeaponSlot1;
+                @WeaponSlot1.performed += instance.OnWeaponSlot1;
+                @WeaponSlot1.canceled += instance.OnWeaponSlot1;
+                @WeaponSlot2.started += instance.OnWeaponSlot2;
+                @WeaponSlot2.performed += instance.OnWeaponSlot2;
+                @WeaponSlot2.canceled += instance.OnWeaponSlot2;
+                @WeaponSlot3.started += instance.OnWeaponSlot3;
+                @WeaponSlot3.performed += instance.OnWeaponSlot3;
+                @WeaponSlot3.canceled += instance.OnWeaponSlot3;
             }
         }
     }
@@ -311,6 +427,10 @@ public partial class @PlayerControlls : IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
+        void OnSkill1(InputAction.CallbackContext context);
+        void OnSkill2(InputAction.CallbackContext context);
+        void OnWeaponSlot1(InputAction.CallbackContext context);
+        void OnWeaponSlot2(InputAction.CallbackContext context);
+        void OnWeaponSlot3(InputAction.CallbackContext context);
     }
 }
