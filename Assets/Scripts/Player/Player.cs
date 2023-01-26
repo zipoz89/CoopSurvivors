@@ -9,12 +9,11 @@ using UnityEngine;
 public class Player : NetworkBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private PlayerCharacter playerCharacter;
-    public PlayerClass PlayerClass { get; private set; }
+    public PlayerClass PlayerClass;
 
     private Camera _playerCamera;
 
-    [SerializeField] private PlayerClass.PlayerClassType playerClass;
+    [SerializeField] private PlayerClassType playerClass;
 
     public override void OnStartClient()
     {
@@ -24,15 +23,14 @@ public class Player : NetworkBehaviour
         {
             RegisterPlayerServer(base.Owner, this);
 
-            ChangeClass(new MarineClass());
+            RegisterInput();
+            ChangeClass(PlayerClassType.Marine);
             SetUpCamera();
             SetUpMovement();
-            SetUpCharacter();
         }
         else
         {
             playerMovement.enabled = false;
-            playerCharacter.enabled = false;
         }
     }
 
@@ -40,12 +38,7 @@ public class Player : NetworkBehaviour
     {
         playerMovement.RegisterInput(GameManager.Instance.PlayerInput);
     }
-
-    private void SetUpCharacter()
-    {
-        playerCharacter.RegisterInput(GameManager.Instance.PlayerInput, this);
-    }
-
+    
     private void SetUpCamera()
     {
         _playerCamera = Camera.main;
@@ -59,26 +52,69 @@ public class Player : NetworkBehaviour
         GameManager.Instance.PlayerManager.RegisterPlayer(owner, player);
     }
     
-    public void ChangeClass(PlayerClass playerClass)
+    public void ChangeClass(PlayerClassType type)
     {
-        Debug.Log("Changing class to " + playerClass.ClassType + " from " + (PlayerClass != null ? PlayerClass.ClassType : "none"));
+        PlayerClass?.UnregisterInput(GameManager.Instance.PlayerInput);
         
-        this.PlayerClass?.UnregisterInput(GameManager.Instance.PlayerInput);
-        this.PlayerClass = playerClass;
-        this.PlayerClass.RegisterInput(GameManager.Instance.PlayerInput);
-        ChangeClassOnServer(playerClass.ClassType);
+        ChangeClassServer(base.Owner,type);
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void ChangeClassOnServer(PlayerClass.PlayerClassType classToChangeInto)
+    [ServerRpc]
+    private void ChangeClassServer(NetworkConnection conn,PlayerClassType type)
     {
-        if (!base.IsServer)
+        //despawn
+        PlayerClass?.Despawn();
+        
+        //spawn new
+        GameObject playerClass = Instantiate(GameManager.Instance.PlayerClassDatabase.GetClassPrefab(type));
+        playerClass.transform.parent = this.transform;
+        base.Spawn(playerClass.gameObject, base.Owner);
+
+        ChangeClassClient(base.Owner,playerClass.GetComponent<PlayerClass>());
+    }
+
+    [TargetRpc]
+    private void ChangeClassClient(NetworkConnection conn,PlayerClass classObject)
+    {
+        PlayerClass = classObject;
+        PlayerClass.RegisterInput(GameManager.Instance.PlayerInput);
+    }
+
+    [SerializeField] private List<IInteractable> players = new List<IInteractable>();
+
+    public void RegisterInput()
+    {
+        GameManager.Instance.PlayerInput.onInteract += Interact;
+    }
+
+    private void Interact(bool state)
+    {
+        if (state == true)
         {
-            this.PlayerClass =  PlayerClass.CreatePlayerClass(classToChangeInto);
+            players[0]?.Interact(this);
         }
 
-        playerClass = classToChangeInto;
     }
 
     
+    
+    [Client]
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Interactable"))
+        {
+            //Debug.Log("added to interactable list");
+            players.Add(other.GetComponent<IInteractable>());
+        }
+    }
+    
+    [Client]
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Interactable"))
+        {
+            //Debug.Log("removed to interactable list");
+            players.Remove(other.GetComponent<IInteractable>());
+        }
+    }
 }

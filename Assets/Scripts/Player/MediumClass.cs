@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class MediumClass : PlayerClass
 {
-    public MediumClass()
-    {
-        ClassType = PlayerClassType.Medium;
-    }
-    
     public override void CastSkill1(bool state)
     {
         if (state)
         {
-            Debug.Log("Cast medium skill 1!");
+            Debug.Log("Cast medium skill 1!",this);
         }
     }
 
@@ -21,7 +16,7 @@ public class MediumClass : PlayerClass
     {
         if (state)
         {
-            Debug.Log("Cast medium skill 2!");
+            Debug.Log("Cast medium skill 2!",this);
         }
     }
 }

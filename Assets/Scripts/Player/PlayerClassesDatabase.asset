@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e44a5c219eaeb459c79c9459c0e829, type: 3}
+  m_Name: PlayerClassesDatabase
+  m_EditorClassIdentifier: 
+  classes:
+  - ClassType: 0
+    Prefab: {fileID: 8412253257803847994, guid: 510b2a22edb15bc4b9799ddb399f8e9e, type: 3}
+  - ClassType: 1
+    Prefab: {fileID: 896496512463841542, guid: f5b68d131ac183f418db04c408408236, type: 3}
+  trol: Trololo

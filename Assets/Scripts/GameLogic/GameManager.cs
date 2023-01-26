@@ -22,13 +22,17 @@ public class GameManager : MonoSingleton<GameManager>
 
     [SerializeField] private StateMachine stateMachine;
     public StateMachine StateMachine => stateMachine;
-    
 
+    [SerializeField] private PlayerClassDatabase playerClassDatabase;
+    public PlayerClassDatabase PlayerClassDatabase => playerClassDatabase;
+    
+    
     protected override void Awake()
     {
         base.Awake();
         
         sceneLoader.SceneManager.OnLoadEnd += SceneLoaded;
+        
     }
 
 

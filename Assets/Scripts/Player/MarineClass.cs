@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class MarineClass : PlayerClass
 {
-    public MarineClass()
-    {
-        ClassType = PlayerClassType.Marine;
-    }
-
     public override void CastSkill1(bool state)
     {
         if (state)
         {
-            Debug.Log("Cast marine skill 1!");
+            Debug.Log("Cast marine skill 1!",this);
         }
     }
 
@@ -21,7 +16,7 @@ public class MarineClass : PlayerClass
     {
         if (state)
         {
-            Debug.Log("Cast marine skill 2!");
+            Debug.Log("Cast marine skill 2!",this);
         }
     }
 }

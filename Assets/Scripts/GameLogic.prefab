@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3284331403313345178}
+  - component: {fileID: 1227674653060754657}
   m_Layer: 0
   m_Name: GameLogic
   m_TagString: Untagged
@@ -31,8 +32,35 @@ Transform:
   - {fileID: 5393068184539265775}
   - {fileID: 3284331404282437948}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1227674653060754657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3284331403313345179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  _networkBehaviours:
+  - {fileID: 3284331404282437950}
+  <ParentNetworkObject>k__BackingField: {fileID: 0}
+  <ChildNetworkObjects>k__BackingField: []
+  _isNetworked: 1
+  _isGlobal: 0
+  _defaultDespawnType: 0
+  NetworkObserver: {fileID: 0}
+  <PrefabId>k__BackingField: -1
+  _scenePathHash: 0
+  <SceneId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 9101459242429216622
+  _sceneNetworkObjects: []
 --- !u!1 &3284331404282437949
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,6 +74,7 @@ GameObject:
   - component: {fileID: 3284331404282437951}
   - component: {fileID: 3284331404282437945}
   - component: {fileID: 3284331404282437944}
+  - component: {fileID: 5715039789486682915}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -81,12 +110,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 0}
+  _addedNetworkObject: {fileID: 1227674653060754657}
+  _networkObjectCache: {fileID: 1227674653060754657}
   playerManager: {fileID: 3284331404282437951}
   playerInput: {fileID: 3284331404282437945}
   sceneLoader: {fileID: 3284331404282437944}
-  stateMachine: {fileID: 0}
+  stateMachine: {fileID: 5715039789486682915}
+  playerClassDatabase: {fileID: 11400000, guid: 8937a8d3682556244bac41b0b1d3a2f2, type: 2}
 --- !u!114 &3284331404282437951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +155,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sceneManager: {fileID: 3284331404886929479}
+--- !u!114 &5715039789486682915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3284331404282437949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b5d5bb80861a745b83c129cc7ba267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3284331404886929486
 PrefabInstance:
   m_ObjectHideFlags: 0

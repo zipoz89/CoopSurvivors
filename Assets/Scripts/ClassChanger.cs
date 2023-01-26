@@ -6,7 +6,7 @@ using UnityEngine;
 public class ClassChanger : MonoBehaviour, IInteractable
 {
     [SerializeField] private String prompt;
-    [SerializeField] private PlayerClass.PlayerClassType classToChangeInto;
+    [SerializeField] private PlayerClassType classToChangeInto;
     public string Prompt { get; set; }
     
     public bool Interact(Player player)
@@ -15,7 +15,7 @@ public class ClassChanger : MonoBehaviour, IInteractable
         if (player.PlayerClass.ClassType != classToChangeInto)
         {
             Debug.Log(classToChangeInto);
-            player.ChangeClass(PlayerClass.CreatePlayerClass(classToChangeInto));
+            player.ChangeClass(classToChangeInto);
             return true;
         }
         else

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
+using UnityEngine.AI;
 
-public abstract class PlayerClass
+public abstract class PlayerClass : NetworkBehaviour
 {
     public PlayerClassType ClassType;
-
-
+    
     public void UnregisterInput(PlayerInput input)
     {
         input.onSkill1 -= CastSkill1;
@@ -24,22 +25,6 @@ public abstract class PlayerClass
 
     public abstract void CastSkill2(bool state);
 
-    public enum PlayerClassType
-    {
-        Marine,
-        Medium,
-    }
+
     
-    public static PlayerClass CreatePlayerClass(PlayerClass.PlayerClassType type)
-    {
-        switch (type)
-        {
-            case PlayerClass.PlayerClassType.Marine:
-                return new MarineClass();
-            case PlayerClass.PlayerClassType.Medium:
-                return new MediumClass();
-            default:
-                return new MarineClass();
-        }
-    }
 }
