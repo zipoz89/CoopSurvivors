@@ -10,6 +10,11 @@ public static class DefaultSceneLoader
     }
 
     static void LoadDefaultScene(PlayModeStateChange state){
+        if (!EditorUtilities.LoadServerScene)
+        {
+            return;
+        }
+
         if (state == PlayModeStateChange.ExitingEditMode) {
             EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo ();
         }

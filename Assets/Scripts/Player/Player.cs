@@ -14,7 +14,10 @@ public class Player : NetworkBehaviour
     private Camera _playerCamera;
 
     [SerializeField] private PlayerClassType playerClass;
+    
+    [SerializeField] private List<IInteractable> interactables = new List<IInteractable>();
 
+    #region SetUp
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -24,7 +27,7 @@ public class Player : NetworkBehaviour
             RegisterPlayerServer(base.Owner, this);
 
             RegisterInput();
-            ChangeClass(PlayerClassType.Marine);
+            ChangeClass(PlayerClassType.Mercenary);
             SetUpCamera();
             SetUpMovement();
         }
@@ -32,6 +35,11 @@ public class Player : NetworkBehaviour
         {
             playerMovement.enabled = false;
         }
+    }
+    
+    public void RegisterInput()
+    {
+        GameManager.Instance.PlayerInput.onInteract += Interact;
     }
 
     private void SetUpMovement()
@@ -45,13 +53,15 @@ public class Player : NetworkBehaviour
         _playerCamera.transform.parent = playerMovement.transform;
         _playerCamera.transform.localPosition = new Vector3(0,0,-10);
     }
-
+    
     [ServerRpc]
     public void RegisterPlayerServer(NetworkConnection owner, Player player)
     {
         GameManager.Instance.PlayerManager.RegisterPlayer(owner, player);
     }
-    
+    #endregion
+
+    #region class
     public void ChangeClass(PlayerClassType type)
     {
         PlayerClass?.UnregisterInput(GameManager.Instance.PlayerInput);
@@ -63,14 +73,19 @@ public class Player : NetworkBehaviour
     private void ChangeClassServer(NetworkConnection conn,PlayerClassType type)
     {
         //despawn
+        PlayerClass?.DeinitializeClass();
         PlayerClass?.Despawn();
         
         //spawn new
-        GameObject playerClass = Instantiate(GameManager.Instance.PlayerClassDatabase.GetClassPrefab(type));
-        playerClass.transform.parent = this.transform;
-        base.Spawn(playerClass.gameObject, base.Owner);
+        GameObject playerClassObject = Instantiate(GameManager.Instance.PlayerClassDatabase.GetClassPrefab(type));
+        playerClassObject.transform.parent = this.transform;
+        playerClassObject.transform.localPosition = Vector3.zero;
+        base.Spawn(playerClassObject.gameObject, base.Owner);
 
-        ChangeClassClient(base.Owner,playerClass.GetComponent<PlayerClass>());
+        var playerClass = playerClassObject.GetComponent<PlayerClass>();
+        playerClass.InitializeClass();
+        
+        ChangeClassClient(base.Owner,playerClass);
     }
 
     [TargetRpc]
@@ -80,18 +95,13 @@ public class Player : NetworkBehaviour
         PlayerClass.RegisterInput(GameManager.Instance.PlayerInput);
     }
 
-    [SerializeField] private List<IInteractable> players = new List<IInteractable>();
-
-    public void RegisterInput()
-    {
-        GameManager.Instance.PlayerInput.onInteract += Interact;
-    }
+    #endregion
 
     private void Interact(bool state)
     {
         if (state == true)
         {
-            players[0]?.Interact(this);
+            interactables[0]?.Interact(this);
         }
 
     }
@@ -104,7 +114,7 @@ public class Player : NetworkBehaviour
         if (other.CompareTag("Interactable"))
         {
             //Debug.Log("added to interactable list");
-            players.Add(other.GetComponent<IInteractable>());
+            interactables.Add(other.GetComponent<IInteractable>());
         }
     }
     
@@ -114,7 +124,7 @@ public class Player : NetworkBehaviour
         if (other.CompareTag("Interactable"))
         {
             //Debug.Log("removed to interactable list");
-            players.Remove(other.GetComponent<IInteractable>());
+            interactables.Remove(other.GetComponent<IInteractable>());
         }
     }
 }
