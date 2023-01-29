@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1291484061028268884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.4295, y: 4.4295, z: 4.4295}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 37342370448070808}
@@ -133,7 +133,51 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: -5531821275957923594}
   _networkObjectCache: {fileID: -5531821275957923594}
-  graphicsObject: {fileID: 1291484061028268884}
+  colliderObject: {fileID: 1291484061028268884}
+  startRadius: 0.5
+  expandSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.05368737
+      value: 0.19816421
+      inSlope: 1.1584125
+      outSlope: 1.1584125
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.4046059
+    - serializedVersion: 3
+      time: 0.19509827
+      value: 0.3041508
+      inSlope: 0.4767389
+      outSlope: 0.4767389
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.09244011
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.96182716
+      outSlope: 0.96182716
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.14318325
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  expandTime: 2
 --- !u!114 &-5531821275957923594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +200,7 @@ MonoBehaviour:
   _isGlobal: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: -1
+  <PrefabId>k__BackingField: 6
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 8239030782590928183

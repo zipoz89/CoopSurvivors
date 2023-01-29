@@ -3,42 +3,84 @@ using System.Collections.Generic;
 using FishNet.Object;
 using UnityEngine;
 
-public class MediumReapSkill : NetworkBehaviour,IOnlinePoolable
+public class MediumReapSkill : Skill
 {
-    [SerializeField] private GameObject graphicsObject;
+    [SerializeField] private GameObject colliderObject;
+
+    [SerializeField] private float startRadius = 0.5f;
+    private float maxRadius;
+
+    [SerializeField] private AnimationCurve expandSpeed;
+    [SerializeField] private float expandTime = 4 ; //TODO: add to stat system 
+
+    private Coroutine expandCoroutine;
     
-    public void OnGenerated()
+    public override void OnGenerated()
     {
-        Debug.Log("MediumReapSkill generated");
         OnGeneratedClient();
     }
 
     [ObserversRpc]
-    private void OnGeneratedClient()
+    protected override void OnGeneratedClient()
     {
-        graphicsObject.SetActive(false);
+        colliderObject.SetActive(false);
     }
 
-    public void OnSpawned()
+    public override void OnSpawned()
     {
-        Debug.Log("MediumReapSkill spawned");
+        colliderObject.SetActive(true);
         OnSpawnedClient();
     }
     
-    [ObserversRpc]
-    private void OnSpawnedClient()
+    [ObserversRpc(RunLocally = false)]
+    protected override void OnSpawnedClient()
     {
-        graphicsObject.SetActive(true);
+        colliderObject.SetActive(true);
     }
 
-    public void OnReturned()
+    public override void OnReturned()
     {
-        Debug.Log("MediumReapSkill returned");
+        colliderObject.SetActive(false);
         OnReturnedClient();
     }
-    [ObserversRpc]
-    private void OnReturnedClient()
+    [ObserversRpc(RunLocally = false)]
+    protected override void OnReturnedClient()
     {
-        graphicsObject.SetActive(false);
+        colliderObject.SetActive(false);
     }
+
+    public void StartReap(float maxDistance)
+    {
+        colliderObject.transform.localScale = new Vector3(startRadius, startRadius, 1);
+        maxRadius = maxDistance;
+
+        expandCoroutine = StartCoroutine(ReapExpand());
+    }
+
+    private IEnumerator ReapExpand()
+    {
+        float elapsedTime = 0;
+
+        while (elapsedTime < expandTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float progress = elapsedTime / expandTime;
+            
+            colliderObject.transform.localScale = Vector3.Lerp(new Vector3(startRadius, startRadius, 1),new Vector3(maxRadius, maxRadius, 1),expandSpeed.Evaluate(progress));
+            
+            yield return null;
+        }
+
+        ApplyReap();
+    }
+
+    public void ApplyReap()
+    {
+        StopCoroutine(expandCoroutine);
+        SkillResetCooldown?.Invoke(true);
+        SkillFinished?.Invoke();
+    }
+
+    
 }

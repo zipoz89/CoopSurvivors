@@ -29,34 +29,39 @@ public class MediumClass : PlayerClass
         soulStrikPool.onObjectSpawnedDestroyed -= SpawnDestroySkill;
     }
 
+    private bool reapIsCasting = false;
+    
     public override void CastSkill1(bool state)
     {
-        if (state)
+        if (!reapIsCasting && state)
         {
-            StartCoroutine(reapSkill());
-            
-            Debug.Log("Cast medium skill 1!",this);
+            StartReap();
+        }
+        else if (!state)
+        {
+            StopReap();
         }
     }
 
-    IEnumerator reapSkill()
+    private MediumReapSkill reap;
+    
+    private void StartReap()
     {
-        var reap = reapPool.Get();
-
-        float elapsedTime = 0;
-
+        reap = reapPool.Get();
+        reap.SkillFinished += ReturnReap;
         reap.transform.parent = this.transform;
         reap.transform.localPosition = Vector3.zero;
+        reap.StartReap(4);//TODO: add to stat system 
+    }
 
-        while (elapsedTime < 2)
-        {
-            elapsedTime += Time.deltaTime;
-            //reap.transform.position = this.transform.position;
-            yield return null;
-        }
+    private void StopReap()
+    {
+        reap.ApplyReap();
+    }
 
+    private void ReturnReap()
+    {
         reap.transform.parent = null;
-        
         reapPool.Return(reap);
     }
 
@@ -68,16 +73,5 @@ public class MediumClass : PlayerClass
         }
     }
 
-    private void SpawnDestroySkill(IOnlinePoolable o,bool mode)
-    {
-        if (mode == true)
-        {
-            ServerManager.Spawn(((NetworkBehaviour)o).gameObject);
-        }
-        else
-        {
-            ServerManager.Despawn(((NetworkBehaviour)o).gameObject);
-        }
 
-    }
 }

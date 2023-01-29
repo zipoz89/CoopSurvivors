@@ -27,7 +27,7 @@ public class Player : NetworkBehaviour
             RegisterPlayerServer(base.Owner, this);
 
             RegisterInput();
-            ChangeClass(PlayerClassType.Mercenary);
+            ChangeClass(PlayerClassType.Medium);
             SetUpCamera();
             SetUpMovement();
         }

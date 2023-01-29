@@ -29,6 +29,16 @@ public abstract class PlayerClass : NetworkBehaviour
 
     public abstract void CastSkill2(bool state);
 
-
+    protected void SpawnDestroySkill(IOnlinePoolable o,bool mode)
+    {
+        if (mode == true)
+        {
+            ServerManager.Spawn(((NetworkBehaviour)o).gameObject);
+        }
+        else
+        {
+            ServerManager.Despawn(((NetworkBehaviour)o).gameObject);
+        }
+    }
     
 }
