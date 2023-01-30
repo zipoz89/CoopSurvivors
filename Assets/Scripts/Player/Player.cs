@@ -65,6 +65,7 @@ public class Player : NetworkBehaviour
     public void ChangeClass(PlayerClassType type)
     {
         PlayerClass?.UnregisterInput(GameManager.Instance.PlayerInput);
+        PlayerClass?.DeinitializeClass();
         
         ChangeClassServer(base.Owner,type);
     }
@@ -73,7 +74,7 @@ public class Player : NetworkBehaviour
     private void ChangeClassServer(NetworkConnection conn,PlayerClassType type)
     {
         //despawn
-        PlayerClass?.DeinitializeClass();
+        
         PlayerClass?.Despawn();
         
         //spawn new
@@ -83,14 +84,15 @@ public class Player : NetworkBehaviour
         base.Spawn(playerClassObject.gameObject, base.Owner);
 
         var playerClass = playerClassObject.GetComponent<PlayerClass>();
-        playerClass.InitializeClass();
-        
+
         ChangeClassClient(base.Owner,playerClass);
     }
 
     [TargetRpc]
     private void ChangeClassClient(NetworkConnection conn,PlayerClass classObject)
     {
+        
+        classObject.InitializeClass();
         PlayerClass = classObject;
         PlayerClass.RegisterInput(GameManager.Instance.PlayerInput);
     }
@@ -105,8 +107,6 @@ public class Player : NetworkBehaviour
         }
 
     }
-
-    
     
     [Client]
     private void OnTriggerEnter2D(Collider2D other)

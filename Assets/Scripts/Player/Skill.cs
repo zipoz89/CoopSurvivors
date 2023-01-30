@@ -5,38 +5,76 @@ using FishNet.Object;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Skill : NetworkBehaviour, IOnlinePoolable
+public class Skill : INetworkPoolableObject
 {
     public Action<bool> SkillResetCooldown;
     public Action SkillFinished;
+    
+    [SerializeField] protected GameObject colliderObject;
+    
+    public override void OnGenerated()
+    {
+        colliderObject.SetActive(false);
+        OnGeneratedServer();
+    }
 
-    public virtual void OnGenerated()
+    [ServerRpc]
+    protected void OnGeneratedServer()
     {
         OnGeneratedClient();
     }
-
+    
     [ObserversRpc]
-    protected virtual void OnGeneratedClient()
+    protected void OnGeneratedClient()
     {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        colliderObject.SetActive(false);
     }
 
-    public virtual void OnSpawned()
+    public override void OnSpawned()
+    {
+        colliderObject.SetActive(true);
+        OnSpawnedServer();
+    }
+    
+    [ServerRpc]
+    protected void OnSpawnedServer()
     {
         OnSpawnedClient();
     }
     
     [ObserversRpc]
-    protected virtual void OnSpawnedClient()
+    protected void OnSpawnedClient()
     {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        colliderObject.SetActive(true);
     }
 
-    public virtual void OnReturned()
+    public override void OnReturned()
+    {
+        colliderObject.SetActive(false);
+        OnReturnedServer();
+    }
+    
+    [ServerRpc]
+    protected void OnReturnedServer()
     {
         OnReturnedClient();
     }
     
     [ObserversRpc]
-    protected virtual void OnReturnedClient()
+    protected void OnReturnedClient()
     {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        colliderObject.SetActive(false);
     }
 }

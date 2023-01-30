@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MediumReapSkill : Skill
 {
-    [SerializeField] private GameObject colliderObject;
+    
 
     [SerializeField] private float startRadius = 0.5f;
     private float maxRadius;
@@ -15,48 +15,35 @@ public class MediumReapSkill : Skill
 
     private Coroutine expandCoroutine;
     
-    public override void OnGenerated()
-    {
-        OnGeneratedClient();
-    }
-
-    [ObserversRpc]
-    protected override void OnGeneratedClient()
-    {
-        colliderObject.SetActive(false);
-    }
-
-    public override void OnSpawned()
-    {
-        colliderObject.SetActive(true);
-        OnSpawnedClient();
-    }
-    
-    [ObserversRpc(RunLocally = false)]
-    protected override void OnSpawnedClient()
-    {
-        colliderObject.SetActive(true);
-    }
-
-    public override void OnReturned()
-    {
-        colliderObject.SetActive(false);
-        OnReturnedClient();
-    }
-    [ObserversRpc(RunLocally = false)]
-    protected override void OnReturnedClient()
-    {
-        colliderObject.SetActive(false);
-    }
-
     public void StartReap(float maxDistance)
     {
         colliderObject.transform.localScale = new Vector3(startRadius, startRadius, 1);
         maxRadius = maxDistance;
 
+        StartReapServer(maxDistance);
+        
         expandCoroutine = StartCoroutine(ReapExpand());
     }
 
+    [ServerRpc]
+    private void StartReapServer(float maxDistance)
+    {
+        StartReapClient(maxDistance);
+    }
+
+    [ObserversRpc]
+    private void StartReapClient(float maxDistance)
+    {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        
+        colliderObject.transform.localScale = new Vector3(startRadius, startRadius, 1);
+        maxRadius = maxDistance;
+        expandCoroutine = StartCoroutine(ReapExpand());
+    }
+    
     private IEnumerator ReapExpand()
     {
         float elapsedTime = 0;
@@ -72,15 +59,32 @@ public class MediumReapSkill : Skill
             yield return null;
         }
 
-        ApplyReap();
+        StopReap();
     }
 
-    public void ApplyReap()
+    public void StopReap()
     {
+        StopReapServer();
         StopCoroutine(expandCoroutine);
         SkillResetCooldown?.Invoke(true);
         SkillFinished?.Invoke();
     }
 
+    [ServerRpc]
+    private void StopReapServer()
+    {
+        StopReapClient();
+    }
+
+    [ObserversRpc]
+    private void StopReapClient()
+    {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        
+        StopCoroutine(expandCoroutine);
+    }
     
 }

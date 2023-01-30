@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using FishNet.Object;
 using UnityEngine;
 
-public class MediumSoulStrikeSkill : NetworkBehaviour,IOnlinePoolable
+public class MediumSoulStrikeSkill : Skill 
 {
     public void OnGenerated()
     {

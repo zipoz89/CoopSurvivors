@@ -1,32 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using FishNet.Connection;
 using FishNet.Object;
 using UnityEngine;
 
 public class MediumClass : PlayerClass
 {
-    private OnlinePooler<MediumReapSkill> reapPool = new OnlinePooler<MediumReapSkill>();
-    private OnlinePooler<MediumSoulStrikeSkill> soulStrikPool = new OnlinePooler<MediumSoulStrikeSkill>();
+    [SerializeField] private OnlinePooler<MediumReapSkill> reapPool;
+    [SerializeField] private OnlinePooler<MediumSoulStrikeSkill> soulStrikPool;
 
-    [SerializeField] private GameObject reapSkillPrefab;
-    [SerializeField] private GameObject soulStrikeSkillPrefab;
-    
     public override void InitializeClass()
     {
-        reapPool.onObjectSpawnedDestroyed += SpawnDestroySkill;
-        soulStrikPool.onObjectSpawnedDestroyed += SpawnDestroySkill;
+        GivePoolOwnership(base.Owner);
         
-        reapPool.InitializePool(reapSkillPrefab);
-        soulStrikPool.InitializePool(soulStrikeSkillPrefab);
+        reapPool.InitializePool();
+        soulStrikPool.InitializePool();
+    }
+
+    [ServerRpc]
+    private void GivePoolOwnership(NetworkConnection nc)
+    {
+        reapPool.GiveOwnership(base.Owner);
+        soulStrikPool.GiveOwnership(base.Owner);
     }
 
     public override void DeinitializeClass()
     {
         reapPool.DeinitializePool();
         soulStrikPool.DeinitializePool();
-        
-        reapPool.onObjectSpawnedDestroyed -= SpawnDestroySkill;
-        soulStrikPool.onObjectSpawnedDestroyed -= SpawnDestroySkill;
     }
 
     private bool reapIsCasting = false;
@@ -45,20 +47,39 @@ public class MediumClass : PlayerClass
 
     private MediumReapSkill reap;
     
-    private void StartReap()
+    private async UniTask StartReap()
     {
-        reap = reapPool.Get();
+        reap = await reapPool.Get();
         reap.SkillFinished += ReturnReap;
         reap.transform.parent = this.transform;
         reap.transform.localPosition = Vector3.zero;
         reap.StartReap(4);//TODO: add to stat system 
+        StartReapServer(reap.transform);
+    }
+
+    [ServerRpc]
+    private void StartReapServer(Transform reap)
+    {
+        StartReapClients(reap);
+    }
+
+    [ObserversRpc]
+    private void StartReapClients(Transform reap)
+    {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        
+        reap.parent = this.transform;
+        reap.localPosition = Vector3.zero;
     }
 
     private void StopReap()
     {
-        reap.ApplyReap();
+        reap.StopReap();
     }
-
+    
     private void ReturnReap()
     {
         reap.transform.parent = null;

@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
+using FishNet.Connection;
 using FishNet.Managing.Server;
+using FishNet.Object;
 using UnityEngine;
 
-public class OnlinePooler<T> where T : IOnlinePoolable
+public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
 {
-    private GameObject objectPrefab;
+    [SerializeField] private GameObject objectPrefab;
     
     int initialPoolSize = 1;
     int maxPoolSize = 10;
@@ -19,15 +22,14 @@ public class OnlinePooler<T> where T : IOnlinePoolable
     
     public List<T> ActiveObjects => activeObjects;
 
-    public Action<T,bool> onObjectSpawnedDestroyed;
+    private int generating = 0;
     
-    public void InitializePool(GameObject prefab)
+    public void InitializePool()
     {
-        objectPrefab = prefab;
-        
         for (int i = 0; i < initialPoolSize; i++)
         {
-            Generate();
+            generating++;
+            Generate(base.Owner);
         }
     }
 
@@ -38,18 +40,21 @@ public class OnlinePooler<T> where T : IOnlinePoolable
 
         foreach (var t in all)
         {
-            onObjectSpawnedDestroyed?.Invoke(t,false);
+            DestroyObject(t);
         }
     }
 
-    public T Get()
+    public async UniTask<T> Get()
     {
         T obj = TryTake();
 
         if (obj == null && CurrentPoolSize < maxPoolSize)
         {
-            Generate();
-
+            generating++;
+            Generate(base.Owner);
+            
+            await UniTask.WaitUntil(() => generating == 0);
+            
             obj = TryTake();
         }
 
@@ -81,14 +86,32 @@ public class OnlinePooler<T> where T : IOnlinePoolable
         pool.Enqueue(obj);
     }
     
-    private void Generate()
+    [ServerRpc]
+    private void Generate(NetworkConnection nc)
     {
         CurrentPoolSize++;
-        GameObject o = GameObject.Instantiate(objectPrefab, new Vector3(1000, 1000, 0), Quaternion.identity);
-        //ServerManager.Spawn(o);
+        GameObject o = Instantiate(objectPrefab, new Vector3(1000, 1000, 0), Quaternion.identity);
+        ServerManager.Spawn(o,nc);
+
         var pollableScript = o.GetComponent<T>();
-        onObjectSpawnedDestroyed?.Invoke(pollableScript,true);
+        
+        
+        RegisterOnUser(nc,o);
+    }
+
+    [TargetRpc]
+    private void RegisterOnUser(NetworkConnection nc,GameObject o)
+    {
+        var pollableScript = o.GetComponent<T>();
+
         pollableScript.OnGenerated();
         pool.Enqueue(pollableScript);
+        generating--;
+    }
+
+    [ServerRpc]
+    private void DestroyObject(NetworkBehaviour no)
+    {
+        no.Despawn();
     }
 }
