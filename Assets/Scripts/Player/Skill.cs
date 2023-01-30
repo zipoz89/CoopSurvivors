@@ -8,7 +8,7 @@ using UnityEngine;
 public class Skill : INetworkPoolableObject
 {
     public Action<bool> SkillResetCooldown;
-    public Action SkillFinished;
+    public Action<Skill> SkillFinished;
     
     [SerializeField] protected GameObject colliderObject;
     

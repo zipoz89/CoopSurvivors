@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour
     private InputAction weaponSlot1;
     private InputAction weaponSlot2;
     private InputAction weaponSlot3;
+    private InputAction mouse;
     
     public Action<bool> onSprint;
     public Action<bool> onShoot;
@@ -25,6 +26,7 @@ public class PlayerInput : MonoBehaviour
     public Action<bool> onWeaponSlot2;
     public Action<bool> onWeaponSlot3;
     public Action<Vector2> onMovement;
+    public Action<Vector2> onMouse;
 
     private void Awake()
     {
@@ -65,6 +67,10 @@ public class PlayerInput : MonoBehaviour
         weaponSlot3 = playerControlls.Player.WeaponSlot3;
         weaponSlot3.performed += OnWeaponSlot3Down;
         weaponSlot3.canceled += OnWeaponSlot3Up;
+        
+        mouse = playerControlls.Player.MousePosition;
+        mouse.performed += OnMouseChanged;
+        mouse.canceled += OnMouseChanged;
     }
 
     private void OnEnable()
@@ -78,12 +84,19 @@ public class PlayerInput : MonoBehaviour
         weaponSlot1.Enable();
         weaponSlot2.Enable();
         weaponSlot3.Enable();
+        mouse.Enable();
     }
 
     private void OnMovementChanged(InputAction.CallbackContext context)
     {
         var direction = context.ReadValue<Vector2>();
         onMovement?.Invoke(direction);
+    }
+    
+    private void OnMouseChanged(InputAction.CallbackContext context)
+    {
+        var pos = context.ReadValue<Vector2>();
+        onMouse?.Invoke(pos);
     }
 
     private void OnShootDown(InputAction.CallbackContext context)

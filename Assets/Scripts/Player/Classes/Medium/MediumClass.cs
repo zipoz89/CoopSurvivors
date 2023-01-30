@@ -10,6 +10,9 @@ public class MediumClass : PlayerClass
     [SerializeField] private OnlinePooler<MediumReapSkill> reapPool;
     [SerializeField] private OnlinePooler<MediumSoulStrikeSkill> soulStrikPool;
 
+    private MediumReapSkill reap;
+    private bool reapIsCasting = false;
+    
     public override void InitializeClass()
     {
         GivePoolOwnership(base.Owner);
@@ -31,9 +34,10 @@ public class MediumClass : PlayerClass
         soulStrikPool.DeinitializePool();
     }
 
-    private bool reapIsCasting = false;
-    
-    public override void CastSkill1(bool state)
+
+    #region ReapSkill
+
+    protected override void CastSkill1(bool state)
     {
         if (!reapIsCasting && state)
         {
@@ -45,8 +49,6 @@ public class MediumClass : PlayerClass
         }
     }
 
-    private MediumReapSkill reap;
-    
     private async UniTask StartReap()
     {
         reap = await reapPool.Get();
@@ -80,19 +82,57 @@ public class MediumClass : PlayerClass
         reap.StopReap();
     }
     
-    private void ReturnReap()
+    private void ReturnReap(Skill skill)
     {
         reap.transform.parent = null;
         reapPool.Return(reap);
     }
+    
+    #endregion
 
-    public override void CastSkill2(bool state)
+
+    protected override void CastSkill2(bool state)
     {
         if (state)
         {
-            Debug.Log("Cast medium skill 2!",this);
+            
+        }
+        else
+        {
+            CastSoulStrike();
         }
     }
 
+    private async UniTask CastSoulStrike()
+    {
+        var soulStrike = await soulStrikPool.Get();
+        soulStrike.SkillFinished += ReturnSoulStrike;
+        
+        soulStrike.transform.position = this.transform.position;
 
+        soulStrike.CastSoulStrikeOwner(lookDir);
+        
+        CastSoulStrikeServer(soulStrike.transform,this.transform.position);
+    }
+    
+    [ServerRpc]
+    private void CastSoulStrikeServer(Transform soulStrike,Vector3 position)
+    {
+        CastSoulStrikeClients(soulStrike,position);
+    }
+
+    [ObserversRpc]
+    private void CastSoulStrikeClients(Transform soulStrike,Vector3 position)
+    {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        soulStrike.transform.position = this.transform.position;
+    }
+
+    private void ReturnSoulStrike(Skill skill)
+    {
+        soulStrikPool.Return((MediumSoulStrikeSkill)skill);
+    }
 }

@@ -9,7 +9,7 @@ public class MercenaryClass : PlayerClass
         Debug.Log("Mercenary initialized");
     }
 
-    public override void CastSkill1(bool state)
+    protected override void CastSkill1(bool state)
     {
         if (state)
         {
@@ -17,7 +17,7 @@ public class MercenaryClass : PlayerClass
         }
     }
 
-    public override void CastSkill2(bool state)
+    protected override void CastSkill2(bool state)
     {
         if (state)
         {

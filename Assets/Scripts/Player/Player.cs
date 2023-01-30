@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using FishNet.Connection;
@@ -17,6 +18,12 @@ public class Player : NetworkBehaviour
     
     [SerializeField] private List<IInteractable> interactables = new List<IInteractable>();
 
+    [SerializeField] private GameObject aimDirObject;
+
+
+    private Vector2 lookDir;
+    private float lookAngle;
+    
     #region SetUp
     public override void OnStartClient()
     {
@@ -26,6 +33,8 @@ public class Player : NetworkBehaviour
         {
             RegisterPlayerServer(base.Owner, this);
 
+            aimDirObject.SetActive(true);
+            
             RegisterInput();
             ChangeClass(PlayerClassType.Medium);
             SetUpCamera();
@@ -40,6 +49,7 @@ public class Player : NetworkBehaviour
     public void RegisterInput()
     {
         GameManager.Instance.PlayerInput.onInteract += Interact;
+        GameManager.Instance.PlayerInput.onMouse += GetMouseDir;
     }
 
     private void SetUpMovement()
@@ -98,6 +108,20 @@ public class Player : NetworkBehaviour
     }
 
     #endregion
+
+    private void GetMouseDir(Vector2 pos)
+    {
+        var mouseWorldPosition = _playerCamera.ScreenToWorldPoint(pos);
+
+        lookDir = ((Vector2)mouseWorldPosition - (Vector2)this.transform.position).normalized;
+        
+        lookAngle = Vector2.SignedAngle(Vector2.right, lookDir);
+        
+        aimDirObject.transform.rotation = Quaternion.Euler(0,0,lookAngle);
+        
+        
+        PlayerClass?.SetLookDir(lookDir);
+    }
 
     private void Interact(bool state)
     {

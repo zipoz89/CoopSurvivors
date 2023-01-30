@@ -218,6 +218,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2290000780327003162}
   _networkObjectCache: {fileID: 2290000780327003162}
   colliderObject: {fileID: 8757299766483877539}
+  baseSpeed: 4
+  baseLifeTime: 4
 --- !u!114 &2290000780327003162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +242,7 @@ MonoBehaviour:
   _isGlobal: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: -1
+  <PrefabId>k__BackingField: 8
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 10387639145572874925

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MediumReapSkill : Skill
 {
-    
-
     [SerializeField] private float startRadius = 0.5f;
     private float maxRadius;
 
@@ -67,7 +65,7 @@ public class MediumReapSkill : Skill
         StopReapServer();
         StopCoroutine(expandCoroutine);
         SkillResetCooldown?.Invoke(true);
-        SkillFinished?.Invoke();
+        SkillFinished?.Invoke(this);
     }
 
     [ServerRpc]

@@ -3,20 +3,88 @@ using System.Collections.Generic;
 using FishNet.Object;
 using UnityEngine;
 
-public class MediumSoulStrikeSkill : Skill 
+public class MediumSoulStrikeSkill : Skill
 {
-    public void OnGenerated()
+    [SerializeField] private float baseSpeed = 1f;//TODO: add to stat system 
+    [SerializeField] private float baseLifeTime = 3f;//TODO: add to stat system 
+    
+    private Coroutine flyCoroutine;
+
+    private Vector2 flyDir; 
+    
+    public void CastSoulStrikeOwner(Vector2 dir)
     {
-        Debug.Log("MediumSoulStrikeSkill generated");
+        CastSoulStrike(dir);
+        StartSoulServer(dir);
+    }
+    
+    [ServerRpc]
+    private void StartSoulServer(Vector2 dir)
+    {
+        StartSoulClient(dir);
     }
 
-    public void OnSpawned()
+    [ObserversRpc]
+    private void StartSoulClient(Vector2 dir)
     {
-        Debug.Log("MediumSoulStrikeSkill spawned");
+        if (base.IsOwner)
+        {
+            return;
+        }
+
+        CastSoulStrike(dir);
     }
 
-    public void OnReturned()
+    private void CastSoulStrike(Vector2 dir)
     {
-        Debug.Log("MediumSoulStrikeSkill returned");
+        flyDir = dir;
+        flyCoroutine = StartCoroutine(ReapExpand());
+    }
+
+    private IEnumerator ReapExpand()
+    {
+        float elapsedTime = 0;
+
+        while (elapsedTime < baseLifeTime)
+        {
+            elapsedTime += Time.deltaTime;
+
+            this.transform.position += (Vector3)flyDir * (baseSpeed * Time.deltaTime);
+            
+            yield return null;
+        }
+
+        StopSoulStrikeOwner();
+    }
+    
+    private void StopSoulStrikeOwner()
+    {
+        StopSoulStrike();
+        StopSoulStrikeServer();
+
+        SkillResetCooldown?.Invoke(true);
+        SkillFinished?.Invoke(this);
+    }
+
+    private void StopSoulStrike()
+    {
+        StopCoroutine(flyCoroutine);
+    }
+
+    [ServerRpc]
+    private void StopSoulStrikeServer()
+    {
+        StopSoulStrikeClient();
+    }
+
+    [ObserversRpc]
+    private void StopSoulStrikeClient()
+    {
+        if (base.IsOwner)
+        {
+            return;
+        }
+
+        StopSoulStrike();
     }
 }
