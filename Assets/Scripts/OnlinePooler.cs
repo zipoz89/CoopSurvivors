@@ -12,8 +12,8 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
 {
     [SerializeField] private GameObject objectPrefab;
     
-    int initialPoolSize = 1;
-    int maxPoolSize = 10;
+    [SerializeField] private int initialPoolSize = 1;
+    [SerializeField] private int maxPoolSize = 10;
     
     public int CurrentPoolSize { get; private set; } = 0;
     

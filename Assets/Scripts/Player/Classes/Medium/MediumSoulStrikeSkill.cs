@@ -14,6 +14,7 @@ public class MediumSoulStrikeSkill : Skill
     
     public void CastSoulStrikeOwner(Vector2 dir)
     {
+        SkillResetCooldown?.Invoke(true);
         CastSoulStrike(dir);
         StartSoulServer(dir);
     }
@@ -48,8 +49,10 @@ public class MediumSoulStrikeSkill : Skill
         while (elapsedTime < baseLifeTime)
         {
             elapsedTime += Time.deltaTime;
+            
+            var posToAdd = (Vector3)flyDir * (baseSpeed * Time.deltaTime);
 
-            this.transform.position += (Vector3)flyDir * (baseSpeed * Time.deltaTime);
+            this.transform.position += posToAdd;
             
             yield return null;
         }
@@ -62,7 +65,7 @@ public class MediumSoulStrikeSkill : Skill
         StopSoulStrike();
         StopSoulStrikeServer();
 
-        SkillResetCooldown?.Invoke(true);
+        
         SkillFinished?.Invoke(this);
     }
 

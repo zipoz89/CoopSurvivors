@@ -11,7 +11,7 @@ public class Skill : INetworkPoolableObject
     public Action<Skill> SkillFinished;
     
     [SerializeField] protected GameObject colliderObject;
-    
+
     public override void OnGenerated()
     {
         colliderObject.SetActive(false);
