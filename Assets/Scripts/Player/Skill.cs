@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using FishNet.Object;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Skill : INetworkPoolableObject
 {
     public Action<bool> SkillResetCooldown;
     public Action<Skill> SkillFinished;
     
-    [SerializeField] protected GameObject colliderObject;
+    [FormerlySerializedAs("colliderObject")] [SerializeField] protected GameObject graphicObject;
 
     public override void OnGenerated()
     {
-        colliderObject.SetActive(false);
+        graphicObject.SetActive(false);
         OnGeneratedServer();
     }
 
@@ -31,12 +32,12 @@ public class Skill : INetworkPoolableObject
         {
             return;
         }
-        colliderObject.SetActive(false);
+        graphicObject.SetActive(false);
     }
 
     public override void OnSpawned()
     {
-        colliderObject.SetActive(true);
+        graphicObject.SetActive(true);
         OnSpawnedServer();
     }
     
@@ -53,12 +54,12 @@ public class Skill : INetworkPoolableObject
         {
             return;
         }
-        colliderObject.SetActive(true);
+        graphicObject.SetActive(true);
     }
 
     public override void OnReturned()
     {
-        colliderObject.SetActive(false);
+        graphicObject.SetActive(false);
         OnReturnedServer();
     }
     
@@ -75,6 +76,6 @@ public class Skill : INetworkPoolableObject
         {
             return;
         }
-        colliderObject.SetActive(false);
+        graphicObject.SetActive(false);
     }
 }

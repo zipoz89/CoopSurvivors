@@ -44,7 +44,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
         }
     }
 
-    public async UniTask<T> Get()
+    public T Get()
     {
         T obj = TryTake();
 
@@ -53,7 +53,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
             generating++;
             Generate(base.Owner);
             
-            await UniTask.WaitUntil(() => generating == 0);
+            //await UniTask.WaitUntil(() => generating == 0);
             
             obj = TryTake();
         }
@@ -72,6 +72,8 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
 
         if (pool.Count > 0)
         {
+            //Debug.Log("Normalnie dequeue robi?");
+            
             result = pool.Dequeue();
             activeObjects.Add(result);
         }
@@ -91,6 +93,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
     {
         CurrentPoolSize++;
         GameObject o = Instantiate(objectPrefab, new Vector3(1000, 1000, 0), Quaternion.identity);
+        o.name = objectPrefab.name + CurrentPoolSize;
         ServerManager.Spawn(o,nc);
 
         var pollableScript = o.GetComponent<T>();
@@ -103,7 +106,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
     private void RegisterOnUser(NetworkConnection nc,GameObject o)
     {
         var pollableScript = o.GetComponent<T>();
-
+        
         pollableScript.OnGenerated();
         pool.Enqueue(pollableScript);
         generating--;

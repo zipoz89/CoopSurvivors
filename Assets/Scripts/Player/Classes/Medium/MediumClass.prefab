@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6045004958379319116}
   - component: {fileID: 5954124791343697720}
   - component: {fileID: 7109518312953979098}
-  - component: {fileID: -2158579102493582409}
   - component: {fileID: 823150308486942110}
   m_Layer: 0
   m_Name: MediumClass
@@ -51,8 +50,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 7109518312953979098}
   _networkObjectCache: {fileID: 7109518312953979098}
   ClassType: 1
-  reapPool: {fileID: -2158579102493582409}
   soulStrikPool: {fileID: 823150308486942110}
+  reapPrefab: {fileID: 8499281688180733750, guid: 04fe7b0cc2286e24dbd9e62c769a6c07, type: 3}
 --- !u!114 &7109518312953979098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +68,7 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   _networkBehaviours:
   - {fileID: 5954124791343697720}
-  - {fileID: -2158579102493582409}
+  - {fileID: 0}
   - {fileID: 823150308486942110}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
@@ -77,31 +76,13 @@ MonoBehaviour:
   _isGlobal: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: -1
+  <PrefabId>k__BackingField: 1
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 801359258678950699
   _sceneNetworkObjects:
   - {fileID: 7109518312953979098}
   - {fileID: 0}
---- !u!114 &-2158579102493582409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 896496512463841542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37eb4f3ba1f9473a9d1e301fd523b946, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 1
-  _addedNetworkObject: {fileID: 7109518312953979098}
-  _networkObjectCache: {fileID: 7109518312953979098}
-  objectPrefab: {fileID: 8499281688180733750, guid: 04fe7b0cc2286e24dbd9e62c769a6c07, type: 3}
-  initialPoolSize: 1
-  maxPoolSize: 10
 --- !u!114 &823150308486942110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,5 +99,5 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 7109518312953979098}
   _networkObjectCache: {fileID: 7109518312953979098}
   objectPrefab: {fileID: 7372501452692483527, guid: c9f3dca6933f83c4ebe24455854b08e4, type: 3}
-  initialPoolSize: 100
-  maxPoolSize: 1000
+  initialPoolSize: 10
+  maxPoolSize: 100

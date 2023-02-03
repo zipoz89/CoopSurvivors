@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.6036846, g: 0.9622642, b: 0.8844784, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.79120874, a: 0.3529412}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,6 +95,8 @@ GameObject:
   - component: {fileID: 37342370448070808}
   - component: {fileID: 5487602429192612064}
   - component: {fileID: -5531821275957923594}
+  - component: {fileID: 5119497070418524850}
+  - component: {fileID: 4853631825487349958}
   m_Layer: 0
   m_Name: Medium Reap Skill
   m_TagString: Untagged
@@ -133,7 +135,8 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: -5531821275957923594}
   _networkObjectCache: {fileID: -5531821275957923594}
-  colliderObject: {fileID: 1291484061028268884}
+  graphicObject: {fileID: 1291484061028268884}
+  reapSoulsPool: {fileID: 4853631825487349958}
   startRadius: 0.5
   expandSpeed:
     serializedVersion: 2
@@ -178,6 +181,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   expandTime: 2
+  damage: 10
 --- !u!114 &-5531821275957923594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,14 +198,68 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   _networkBehaviours:
   - {fileID: 5487602429192612064}
+  - {fileID: 4853631825487349958}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
   _isGlobal: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 6
+  <PrefabId>k__BackingField: 7
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 8239030782590928183
   _sceneNetworkObjects: []
+--- !u!58 &5119497070418524850
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8499281688180733750}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.25
+--- !u!114 &4853631825487349958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8499281688180733750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37eb4f3ba1f9473a9d1e301fd523b946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: -5531821275957923594}
+  _networkObjectCache: {fileID: -5531821275957923594}
+  objectPrefab: {fileID: 6507044998733082746, guid: 6aea6dee35d14da439db12bec554ed23, type: 3}
+  initialPoolSize: 10
+  maxPoolSize: 100

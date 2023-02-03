@@ -7,31 +7,32 @@ using UnityEngine;
 
 public class MediumClass : PlayerClass
 {
-    [SerializeField] private OnlinePooler<MediumReapSkill> reapPool;
+    //[SerializeField] private OnlinePooler<MediumReapSkill> reapPool;
     [SerializeField] private OnlinePooler<MediumSoulStrikeSkill> soulStrikPool;
-
+    
+    [SerializeField] private GameObject reapPrefab;
+    
     private MediumReapSkill reap;
     private bool reapIsCasting = false;
     
     public override void InitializeClass()
     {
         GivePoolOwnership(base.Owner);
-        
-        reapPool.InitializePool();
+
+        SpawnReap(base.Owner);
         soulStrikPool.InitializePool();
     }
 
     [ServerRpc]
     private void GivePoolOwnership(NetworkConnection nc)
     {
-        reapPool.GiveOwnership(base.Owner);
         soulStrikPool.GiveOwnership(base.Owner);
     }
 
     public override void DeinitializeClass()
     {
-        reapPool.DeinitializePool();
         soulStrikPool.DeinitializePool();
+        reap.Deinitialize();
     }
 
 
@@ -51,11 +52,12 @@ public class MediumClass : PlayerClass
 
     private async UniTask StartReap()
     {
-        reap = await reapPool.Get();
+        //reap = await reapPool.Get();
+        reap.OnSpawned();
         reap.SkillFinished += ReturnReap;
         reap.transform.parent = this.transform;
         reap.transform.localPosition = Vector3.zero;
-        reap.StartReap(4);//TODO: add to stat system 
+        reap.StartReap(10);//TODO: add to stat system 
         StartReapServer(reap.transform);
     }
 
@@ -84,8 +86,8 @@ public class MediumClass : PlayerClass
     
     private void ReturnReap(Skill skill)
     {
-        reap.transform.parent = null;
-        reapPool.Return(reap);
+        reap.OnReturned();
+        //reapPool.Return(reap);
     }
     
     #endregion
@@ -105,7 +107,7 @@ public class MediumClass : PlayerClass
 
     private async UniTask CastSoulStrike()
     {
-        var soulStrike = await soulStrikPool.Get();
+        var soulStrike = soulStrikPool.Get();
         soulStrike.SkillFinished += ReturnSoulStrike;
         
         soulStrike.transform.position = this.transform.position;
@@ -134,5 +136,24 @@ public class MediumClass : PlayerClass
     private void ReturnSoulStrike(Skill skill)
     {
         soulStrikPool.Return((MediumSoulStrikeSkill)skill);
+    }
+
+    [ServerRpc]
+    private void SpawnReap(NetworkConnection nc)
+    {
+        GameObject o = Instantiate(reapPrefab, new Vector3(1000, 1000, 0), Quaternion.identity);
+        ServerManager.Spawn(o,nc);
+        
+        var reapSkill = o.GetComponent<MediumReapSkill>();
+        reapSkill.Initialize(nc);
+        GetReapReference(nc, reapSkill);
+    }
+
+    [TargetRpc]
+    private void GetReapReference(NetworkConnection nc,MediumReapSkill skillReference)
+    {
+        reap = skillReference;
+        reap.GiveOwnership(nc);
+        reap.OnGenerated();
     }
 }

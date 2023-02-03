@@ -1,6 +1,6 @@
 ﻿namespace Cyan.Player.Classes.Medium
 {
-    public class ReapPooler: OnlinePooler<MediumReapSkill>
+    public class ReapPooler: OnlinePooler<MediumReapSouls>
     {
         
     }
