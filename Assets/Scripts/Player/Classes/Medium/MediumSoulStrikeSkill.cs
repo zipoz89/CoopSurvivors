@@ -7,6 +7,7 @@ public class MediumSoulStrikeSkill : Skill
 {
     [SerializeField] private float baseSpeed = 1f;//TODO: add to stat system 
     [SerializeField] private float baseLifeTime = 3f;//TODO: add to stat system 
+    [SerializeField] private TrailRenderer trail;
     
     private Coroutine flyCoroutine;
 
@@ -89,5 +90,23 @@ public class MediumSoulStrikeSkill : Skill
         }
 
         StopSoulStrike();
+    }
+    
+    public override void OnReturned()
+    {
+        base.OnReturned();
+        trail.Clear();
+    }
+    
+
+    [ObserversRpc]
+    protected override void OnReturnedClient()
+    {
+        if (base.IsOwner)
+        {
+            return;
+        }
+        graphicObject.SetActive(false);
+        trail.Clear();
     }
 }

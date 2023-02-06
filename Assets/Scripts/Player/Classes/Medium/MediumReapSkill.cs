@@ -40,7 +40,7 @@ public class MediumReapSkill : Skill
 
     public void StartReap(float maxDistance)
     {
-        graphicObject.transform.localScale = new Vector3(startRadius, startRadius, 1);
+        transform.localScale = new Vector3(startRadius, startRadius, 1);
         maxRadius = maxDistance;
 
         StartReapServer(maxDistance);
@@ -62,7 +62,7 @@ public class MediumReapSkill : Skill
             return;
         }
         
-        graphicObject.transform.localScale = new Vector3(startRadius, startRadius, 1);
+        transform.localScale = new Vector3(startRadius, startRadius, 1);
         maxRadius = maxDistance;
         expandCoroutine = StartCoroutine(ReapExpand());
     }
@@ -96,7 +96,7 @@ public class MediumReapSkill : Skill
         {
             enemy.DealDamage(damage, DamageType.Magic,base.Owner);
             
-            var reapSoul = reapSoulsPool.Get();
+            var reapSoul = await reapSoulsPool.Get();
             
             reapSoul.SkillFinished += ReturnSoul;
 

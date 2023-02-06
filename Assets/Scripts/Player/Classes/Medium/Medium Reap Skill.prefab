@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1291484061028268884}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 37342370448070808}
@@ -135,9 +135,10 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: -5531821275957923594}
   _networkObjectCache: {fileID: -5531821275957923594}
+  Index: 0
   graphicObject: {fileID: 1291484061028268884}
   reapSoulsPool: {fileID: 4853631825487349958}
-  startRadius: 0.5
+  startRadius: 0.025
   expandSpeed:
     serializedVersion: 2
     m_Curve:
@@ -151,23 +152,23 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.05368737
-      value: 0.19816421
-      inSlope: 1.1584125
-      outSlope: 1.1584125
+      time: 0.059165277
+      value: 0.35618424
+      inSlope: 4.209348
+      outSlope: 4.209348
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.4046059
+      outWeight: 0.12158824
     - serializedVersion: 3
-      time: 0.19509827
-      value: 0.3041508
-      inSlope: 0.4767389
-      outSlope: 0.4767389
+      time: 0.1857904
+      value: 0.61323285
+      inSlope: 0.5057482
+      outSlope: 0.5057482
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.09244011
+      outWeight: 0.03172695
     - serializedVersion: 3
       time: 1
       value: 1
@@ -244,7 +245,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.5
 --- !u!114 &4853631825487349958
 MonoBehaviour:
   m_ObjectHideFlags: 0

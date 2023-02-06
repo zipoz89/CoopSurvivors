@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using FishNet.Object;
 using UnityEngine;
 
 public class MediumReapSouls : Skill
 {
-    [SerializeField] private AnimationCurve moveCurve;
+    [SerializeField] private AnimationCurve[] moveCurve;
     [SerializeField] private float moveTime = 1 ; //TODO: add to stat system 
 
     private Coroutine MoveToPlayerCoroutine;
     private Vector3 startPos;
     private Transform playerTransform;
+
+    private int fullRandomAnimCurve;
+    private int halfRandomAnimCurve;
+
+    private int randomIndex;
+    
+    
     
     public void StartReap(Vector3 startPos,Transform playerTransform)
     {
@@ -19,6 +27,11 @@ public class MediumReapSouls : Skill
         this.startPos = startPos;
         this.playerTransform = playerTransform;
         StartReapServer(startPos, playerTransform);
+
+
+        randomIndex = Random.Range(0, moveCurve.Length - 1);
+        
+        Debug.Log(randomIndex);
         
         MoveToPlayerCoroutine = StartCoroutine(ReapSoulMoveToPlayer());
     }
@@ -38,6 +51,10 @@ public class MediumReapSouls : Skill
         }
         this.playerTransform = playerTransform;
         this.startPos = startPos;
+
+
+        randomIndex = Random.Range(0, moveCurve.Length - 1);
+
         MoveToPlayerCoroutine = StartCoroutine(ReapSoulMoveToPlayer());
     }
     
@@ -51,7 +68,7 @@ public class MediumReapSouls : Skill
 
             float progress = elapsedTime / moveTime;
             
-            transform.transform.position = Vector3.Lerp(startPos,playerTransform.position,moveCurve.Evaluate(progress));
+            transform.transform.position = Vector3.Lerp(startPos,playerTransform.position,moveCurve[randomIndex].Evaluate(progress));
             
             yield return null;
         }

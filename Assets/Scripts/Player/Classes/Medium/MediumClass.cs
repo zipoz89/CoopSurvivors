@@ -57,7 +57,7 @@ public class MediumClass : PlayerClass
         reap.SkillFinished += ReturnReap;
         reap.transform.parent = this.transform;
         reap.transform.localPosition = Vector3.zero;
-        reap.StartReap(10);//TODO: add to stat system 
+        reap.StartReap(1);//TODO: add to stat system 
         StartReapServer(reap.transform);
     }
 
@@ -107,7 +107,7 @@ public class MediumClass : PlayerClass
 
     private async UniTask CastSoulStrike()
     {
-        var soulStrike = soulStrikPool.Get();
+        var soulStrike = await soulStrikPool.Get();
         soulStrike.SkillFinished += ReturnSoulStrike;
         
         soulStrike.transform.position = this.transform.position;
@@ -135,6 +135,7 @@ public class MediumClass : PlayerClass
 
     private void ReturnSoulStrike(Skill skill)
     {
+        skill.SkillFinished -= ReturnSoulStrike;
         soulStrikPool.Return((MediumSoulStrikeSkill)skill);
     }
 

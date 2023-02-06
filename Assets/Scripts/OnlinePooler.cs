@@ -44,7 +44,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
         }
     }
 
-    public T Get()
+    public async UniTask<T>  Get()
     {
         T obj = TryTake();
 
@@ -53,7 +53,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
             generating++;
             Generate(base.Owner);
             
-            //await UniTask.WaitUntil(() => generating == 0);
+            await UniTask.WaitUntil(() => generating == 0);
             
             obj = TryTake();
         }
@@ -97,7 +97,7 @@ public class OnlinePooler<T> : NetworkBehaviour where T : INetworkPoolableObject
         ServerManager.Spawn(o,nc);
 
         var pollableScript = o.GetComponent<T>();
-        
+        pollableScript.Index = CurrentPoolSize - 1;
         
         RegisterOnUser(nc,o);
     }

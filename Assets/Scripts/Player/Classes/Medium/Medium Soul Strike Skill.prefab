@@ -217,9 +217,11 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 2290000780327003162}
   _networkObjectCache: {fileID: 2290000780327003162}
-  colliderObject: {fileID: 8757299766483877539}
+  Index: 0
+  graphicObject: {fileID: 8757299766483877539}
   baseSpeed: 4
   baseLifeTime: 4
+  trail: {fileID: 4385262659453630856}
 --- !u!114 &2290000780327003162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,7 +276,7 @@ Transform:
   m_GameObject: {fileID: 8757299766483877539}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.30173, y: 0.30173, z: 0.30173}
+  m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2892829582363576182}
@@ -385,8 +387,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.0026666664
-        value: 0.2976191
+        time: 0
+        value: 0.06
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -430,7 +432,7 @@ TrailRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 2
-    textureScale: {x: 3, y: 1}
+    textureScale: {x: 5, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.0001

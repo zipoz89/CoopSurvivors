@@ -14,6 +14,7 @@ public static class DefaultSceneLoader
         {
             return;
         }
+        
 
         if (state == PlayModeStateChange.ExitingEditMode) {
             EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo ();

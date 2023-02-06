@@ -70,7 +70,7 @@ public class Skill : INetworkPoolableObject
     }
     
     [ObserversRpc]
-    protected void OnReturnedClient()
+    protected virtual void OnReturnedClient()
     {
         if (base.IsOwner)
         {
